@@ -2,6 +2,7 @@ import { Request, Response, Router } from 'express';
 import { ClientService } from '../../services/client/client.service';
 import { TOKEN_USER } from '../../../entrypoint/util/constants/constants';
 import jwt from 'jsonwebtoken';
+import { TokenValidation } from '../../helper/client.tokenvalidator';
 
 
 export class ClientController{
@@ -12,24 +13,22 @@ export class ClientController{
   }
 
   public setRoutes() {
-    this.router.get('/singin', this.singin);
+    this.router.post('/singin', this.singin);
     this.router.post('/singup',this.singup);
     this.router.get("/all", this.findAll);
     this.router.get("/:id", this.findById);
     this.router.post("/", this.save);
     this.router.delete("/:id", this.delete);
-    this.router.patch("/:id", this.update);
-    
-    
+    this.router.put("/:id", this.update);
     
   }
   
   public singin = async (req: Request, res: Response) => {
     try {
-      const userSearch = await this.clientService.findUser(
-        req.body.user
-      );
-      res.status(200).send(userSearch);
+      const userSearch = await this.clientService.findUser(req.body.user);
+      //res.status(200).send(userSearch);
+      const token: string = jwt.sign({ _id: userSearch._id }, TOKEN_USER);
+      res.header('auth-token', token).json(userSearch.name);
     } catch (error) {
       res.status(500).send(error.message);
     }

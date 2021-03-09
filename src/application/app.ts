@@ -1,8 +1,9 @@
 import { Application} from 'express';
 import bodyParser from 'body-parser';
 import { MONGO_URL } from '../infrastructure/entrypoint/util/constants/constants';
-import { ClientController } from '../infrastructure/entrypoint/controllers/client/client.controller';
 import { ClientService } from '../infrastructure/entrypoint/services/client/client.service';
+import { ClientController } from '../infrastructure/entrypoint/controllers/client/client.controller';
+import {ClientOperationController} from '../infrastructure/entrypoint/controllers/client/operations/client.controller.operations'
 import mongoose from 'mongoose';
 import cors from 'cors';
 import express from 'express';
@@ -39,7 +40,9 @@ class App{
   
   private setControllers() {
     const clientController = new ClientController(new ClientService());
-    this.app.use("/client",clientController.router);
+    const clientOperationController = new ClientOperationController(new ClientService());
+    this.app.use("/client", clientController.router);
+    this.app.use("/client",clientOperationController.router);
 }
 
 

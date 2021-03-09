@@ -2,6 +2,9 @@ import { Client } from '../../../../domain/model/client/client.model';
 import { ICliente } from '../../../../domain/model/client/interface/client.interface';
 
 
+
+
+
 export class ClientService{
   
 
@@ -15,18 +18,16 @@ export class ClientService{
 
   }
   public async update(id: string, client: ICliente): Promise<ICliente>{
-    const updatedClient  = await Client.findByIdAndUpdate(
-      id,
-      client
-    ).exec();
-
+    const updatedClient  = await Client.findByIdAndUpdate(id,client).exec();
+    console.log(updatedClient);
     if (!updatedClient) {
       throw new Error(`Client with id '${id}' not found`);
     }
 
     return updatedClient;
 
-  }
+  };
+
   public async deletebyId(id: string): Promise<ICliente>{
     const deletedClient  = await Client
           .findByIdAndDelete(id).exec();
@@ -38,6 +39,7 @@ export class ClientService{
         return deletedClient;
 
   }
+
   public async findById(id: string): Promise<ICliente>{
     const idClient  = await Client
           .findById(id).exec();
@@ -51,7 +53,8 @@ export class ClientService{
   }
 
   public async findUser(user: string): Promise<ICliente>{
-    const userResgister  = await Client.findOne({ user: user}).exec();
+    const userResgister = await Client.findOne({ user: user }).exec();
+    
     
         if (!userResgister) {
           throw new Error(`Client  '${user}' is not valid`);
@@ -60,6 +63,18 @@ export class ClientService{
         return userResgister;
 
   }
+
+  public async createProduct(clientId: string, producto: string[]): Promise<ICliente>{
+    const produc = {products: producto}
+    const productResult  = await Client.findByIdAndUpdate(clientId,produc).exec();
+
+    if (!productResult) {
+      throw new Error(`Client with id '${clientId}' not found`);
+    }
+
+    return productResult;
+
+  };
   
 
 }

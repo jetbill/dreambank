@@ -9,7 +9,7 @@ export interface ICliente extends Document{
   password: string;
   identification: string;
   isActive: boolean;
-  products: Array<String>;
+  products: string[];
   accounts: Array<any>;
   rol: Array<String>;
 

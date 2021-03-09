@@ -6,8 +6,8 @@ services:
     image: mongo:latest
     restart: always
     volumes:
-      - ./pokeData:/data/db
+      - ./bankData:/data/db
     environment:
-      - MONGO_INITDB_DATABASE= Pokemon
+      - MONGO_INITDB_DATABASE= bankdream
     ports:
       - 27017:27017
